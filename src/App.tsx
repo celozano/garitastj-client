@@ -1,4 +1,8 @@
+import { useEffect } from 'react';
 import { useQuery } from 'react-query';
+
+import ReactGA from 'react-ga4';
+ReactGA.initialize(import.meta.env.VITE_G_MEASUREMENT_ID);
 
 import { Card, Error, Footer, SkeletonLoader } from './components';
 import { Port } from './types';
@@ -7,6 +11,10 @@ export const App = () => {
   const { data, isLoading, error } = useQuery('border-wait-times', () =>
     fetch(import.meta.env.VITE_BWT_API_URL).then((res) => res.json())
   );
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
 
   return (
     <div className="mx-auto flex h-screen max-w-7xl flex-col justify-between pt-0 lg:pt-28">
